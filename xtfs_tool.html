@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 選型計算機 | XTFS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-8">
+            <a href="index.html" class="text-xl font-bold">
+                <span class="text-blue-400">XTFS</span> 選型計算機
+            </a>
+            <a href="index.html" class="text-gray-400 hover:text-white transition">← 返回首頁</a>
+        </header>
+
+        <!-- Main Content -->
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-3xl font-bold text-center mb-2">AI 選型計算機</h1>
+            <p class="text-center text-gray-400 mb-8">3 秒告訴你該用哪個 AI</p>
+
+            <!-- Input Section -->
+            <div class="bg-white/10 rounded-2xl p-6 mb-6">
+                <h2 class="text-xl font-semibold mb-4">1. 你的任務是什麼？</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <button onclick="selectTask('intent')" class="task-btn bg-white/5 p-4 rounded-xl border-2 border-transparent hover:border-blue-400 transition" data-task="intent">
+                        <div class="text-2xl mb-2">🎯</div>
+                        <div class="font-medium">理解意圖</div>
+                        <div class="text-xs text-gray-400">分析需求</div>
+                    </button>
+                    <button onclick="selectTask('structure')" class="task-btn bg-white/5 p-4 rounded-xl border-2 border-transparent hover:border-blue-400 transition" data-task="structure">
+                        <div class="text-2xl mb-2">📐</div>
+                        <div class="font-medium">結構設計</div>
+                        <div class="text-xs text-gray-400">規劃架構</div>
+                    </button>
+                    <button onclick="selectTask('code')" class="task-btn bg-white/5 p-4 rounded-xl border-2 border-transparent hover:border-blue-400 transition" data-task="code">
+                        <div class="text-2xl mb-2">💻</div>
+                        <div class="font-medium">寫代碼</div>
+                        <div class="text-xs text-gray-400">程式開發</div>
+                    </button>
+                    <button onclick="selectTask('review')" class="task-btn bg-white/5 p-4 rounded-xl border-2 border-transparent hover:border-blue-400 transition" data-task="review">
+                        <div class="text-2xl mb-2">✅</div>
+                        <div class="font-medium">品質審核</div>
+                        <div class="text-xs text-gray-400">檢查把關</div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white/10 rounded-2xl p-6 mb-6">
+                <h2 class="text-xl font-semibold mb-4">2. 你的偏好？</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <button onclick="selectMode('quality')" class="mode-btn bg-white/5 p-4 rounded-xl border-2 border-transparent hover:border-yellow-400 transition" data-mode="quality">
+                        <div class="text-2xl mb-2">🏆</div>
+                        <div class="font-medium">品質優先</div>
+                    </button>
+                    <button onclick="selectMode('balanced')" class="mode-btn bg-white/5 p-4 rounded-xl border-2 border-transparent hover:border-green-400 transition" data-mode="balanced">
+                        <div class="text-2xl mb-2">⚖️</div>
+                        <div class="font-medium">平衡</div>
+                    </button>
+                    <button onclick="selectMode('speed')" class="mode-btn bg-white/5 p-4 rounded-xl border-2 border-transparent hover:border-blue-400 transition" data-mode="speed">
+                        <div class="text-2xl mb-2">⚡</div>
+                        <div class="font-medium">速度優先</div>
+                    </button>
+                    <button onclick="selectMode('cost')" class="mode-btn bg-white/5 p-4 rounded-xl border-2 border-transparent hover:border-purple-400 transition" data-mode="cost">
+                        <div class="text-2xl mb-2">💰</div>
+                        <div class="font-medium">成本優先</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result Section -->
+            <div id="result" class="hidden">
+                <div class="bg-gradient-to-r from-blue-600/30 to-purple-600/30 rounded-2xl p-6 border border-blue-400/50">
+                    <h2 class="text-xl font-semibold mb-4 text-center">🎯 推薦方案</h2>
+                    
+                    <div id="recommendation" class="text-center mb-6">
+                        <!-- 動態填充 -->
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-4 text-center">
+                        <div class="bg-white/10 p-4 rounded-xl">
+                            <div class="text-gray-400 text-sm">預估成本</div>
+                            <div id="cost" class="text-2xl font-bold text-green-400">-</div>
+                        </div>
+                        <div class="bg-white/10 p-4 rounded-xl">
+                            <div class="text-gray-400 text-sm">品質評分</div>
+                            <div id="quality" class="text-2xl font-bold text-yellow-400">-</div>
+                        </div>
+                        <div class="bg-white/10 p-4 rounded-xl">
+                            <div class="text-gray-400 text-sm">節省比例</div>
+                            <div id="savings" class="text-2xl font-bold text-blue-400">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-6">
+                    <p class="text-gray-400 mb-4">想學完整方法論？</p>
+                    <a href="index.html#pricing" class="inline-block bg-blue-600 px-6 py-3 rounded-xl font-semibold hover:bg-blue-500 transition">
+                        查看課程方案 →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOE 矩陣（簡化版）
+        const DOE_MATRIX = {
+            intent: {
+                quality: { model: 'Claude Sonnet', tower: 'S塔', cost: 0.018, quality: 95, color: 'yellow' },
+                balanced: { model: 'GPT-4o Mini', tower: 'X塔', cost: 0.0008, quality: 88, color: 'green' },
+                speed: { model: 'GPT-4o Mini', tower: 'X塔', cost: 0.0008, quality: 88, color: 'green' },
+                cost: { model: 'Gemini Flash', tower: 'T塔', cost: 0.0004, quality: 82, color: 'blue' }
+            },
+            structure: {
+                quality: { model: 'Claude Sonnet', tower: 'S塔', cost: 0.018, quality: 94, color: 'yellow' },
+                balanced: { model: 'Gemini Flash', tower: 'T塔', cost: 0.0004, quality: 90, color: 'blue' },
+                speed: { model: 'Gemini Flash', tower: 'T塔', cost: 0.0004, quality: 90, color: 'blue' },
+                cost: { model: 'Gemini Flash', tower: 'T塔', cost: 0.0004, quality: 90, color: 'blue' }
+            },
+            code: {
+                quality: { model: 'Claude Sonnet', tower: 'S塔', cost: 0.018, quality: 96, color: 'yellow' },
+                balanced: { model: 'DeepSeek', tower: 'F塔', cost: 0.0004, quality: 92, color: 'purple' },
+                speed: { model: 'DeepSeek', tower: 'F塔', cost: 0.0004, quality: 92, color: 'purple' },
+                cost: { model: 'DeepSeek', tower: 'F塔', cost: 0.0004, quality: 92, color: 'purple' }
+            },
+            review: {
+                quality: { model: 'Claude Sonnet', tower: 'S塔', cost: 0.018, quality: 98, color: 'yellow' },
+                balanced: { model: 'Claude Sonnet', tower: 'S塔', cost: 0.018, quality: 98, color: 'yellow' },
+                speed: { model: 'GPT-4o Mini', tower: 'X塔', cost: 0.0008, quality: 85, color: 'green' },
+                cost: { model: 'GPT-4o Mini', tower: 'X塔', cost: 0.0008, quality: 85, color: 'green' }
+            }
+        };
+
+        let selectedTask = null;
+        let selectedMode = null;
+
+        function selectTask(task) {
+            selectedTask = task;
+            document.querySelectorAll('.task-btn').forEach(btn => {
+                btn.classList.remove('border-blue-400');
+                btn.classList.add('border-transparent');
+            });
+            document.querySelector(`[data-task="${task}"]`).classList.remove('border-transparent');
+            document.querySelector(`[data-task="${task}"]`).classList.add('border-blue-400');
+            updateResult();
+        }
+
+        function selectMode(mode) {
+            selectedMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('border-yellow-400', 'border-green-400', 'border-blue-400', 'border-purple-400');
+                btn.classList.add('border-transparent');
+            });
+            const colors = { quality: 'yellow', balanced: 'green', speed: 'blue', cost: 'purple' };
+            document.querySelector(`[data-mode="${mode}"]`).classList.remove('border-transparent');
+            document.querySelector(`[data-mode="${mode}"]`).classList.add(`border-${colors[mode]}-400`);
+            updateResult();
+        }
+
+        function updateResult() {
+            if (!selectedTask || !selectedMode) return;
+
+            const result = DOE_MATRIX[selectedTask][selectedMode];
+            const resultDiv = document.getElementById('result');
+            const recDiv = document.getElementById('recommendation');
+
+            const colorClasses = {
+                yellow: 'from-yellow-500/30 to-yellow-600/10 border-yellow-400',
+                green: 'from-green-500/30 to-green-600/10 border-green-400',
+                blue: 'from-blue-500/30 to-blue-600/10 border-blue-400',
+                purple: 'from-purple-500/30 to-purple-600/10 border-purple-400'
+            };
+
+            recDiv.innerHTML = `
+                <div class="inline-block bg-gradient-to-r ${colorClasses[result.color]} border rounded-xl px-6 py-4">
+                    <div class="text-3xl font-bold">${result.model}</div>
+                    <div class="text-gray-300">${result.tower}</div>
+                </div>
+            `;
+
+            document.getElementById('cost').textContent = `$${result.cost.toFixed(4)}`;
+            document.getElementById('quality').textContent = `${result.quality}/100`;
+            
+            // 計算相對於 GPT-4o ($0.01) 的節省
+            const gpt4oCost = 0.01;
+            const savings = Math.round((1 - result.cost / gpt4oCost) * 100);
+            document.getElementById('savings').textContent = savings > 0 ? `${savings}%` : '基準';
+
+            resultDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
